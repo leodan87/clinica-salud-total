@@ -1,58 +1,70 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Citas Médicas - Clínica{% endblock %}
+{% block titulo %}Citas Medicas - Clinica Salud Total{% endblock %}
 
 {% block contenido %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Citas Médicas</h2>
-    <a href="{% url 'cita_crear' %}" class="btn btn-danger">+ Nueva Cita</a>
+<div class="d-flex justify-content-between align-items-center page-header">
+    <h2><i class="bi bi-calendar2-check me-2"></i>Citas Medicas</h2>
+    <a href="{% url 'cita_crear' %}" class="btn btn-danger">
+        <i class="bi bi-calendar-plus me-1"></i> Nueva Cita
+    </a>
 </div>
 
-<div class="card">
-    <div class="card-body">
-        {% if citas %}
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Paciente</th>
-                        <th>Doctor</th>
-                        <th>Motivo</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for cita in citas %}
-                    <tr>
-                        <td>{{ cita.fecha }}</td>
-                        <td>{{ cita.hora }}</td>
-                        <td>{{ cita.paciente }}</td>
-                        <td>{{ cita.doctor }}</td>
-                        <td>{{ cita.motivo|truncatewords:10 }}</td>
-                        <td>
-                            {% if cita.estado == 'Pendiente' %}
-                            <span class="badge bg-warning text-dark">Pendiente</span>
-                            {% elif cita.estado == 'Completada' %}
-                            <span class="badge bg-success">Completada</span>
-                            {% else %}
-                            <span class="badge bg-secondary">Cancelada</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="{% url 'cita_editar' cita.pk %}" class="btn btn-sm btn-warning">Editar</a>
-                            <a href="{% url 'cita_eliminar' cita.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <p class="text-muted text-center py-4">No hay citas médicas registradas.</p>
-        {% endif %}
+{% if citas %}
+<div class="table-container">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Paciente</th>
+                    <th>Doctor</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in citas %}
+                <tr>
+                    <td><i class="bi bi-calendar me-1 text-muted"></i>{{ cita.fecha }}</td>
+                    <td><i class="bi bi-clock me-1 text-muted"></i>{{ cita.hora }}</td>
+                    <td>{{ cita.paciente }}</td>
+                    <td>{{ cita.doctor }}</td>
+                    <td class="text-muted">{{ cita.motivo|truncatewords:10 }}</td>
+                    <td>
+                        {% if cita.estado == 'Pendiente' %}
+                        <span class="badge bg-warning text-dark"><i class="bi bi-clock-history me-1"></i>Pendiente</span>
+                        {% elif cita.estado == 'Completada' %}
+                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Completada</span>
+                        {% else %}
+                        <span class="badge bg-secondary"><i class="bi bi-x-circle me-1"></i>Cancelada</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <a href="{% url 'cita_editar' cita.pk %}" class="btn btn-sm btn-outline-warning" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'cita_eliminar' cita.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
+{% else %}
+<div class="card">
+    <div class="empty-state">
+        <i class="bi bi-calendar2-check d-block"></i>
+        <p>No hay citas medicas registradas.</p>
+        <a href="{% url 'cita_crear' %}" class="btn btn-danger btn-sm">
+            <i class="bi bi-calendar-plus me-1"></i> Agendar primera cita
+        </a>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

@@ -4,36 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - Clínica Salud Total</title>
+    <title>Iniciar Sesion - Clinica Salud Total</title>
     {% bootstrap_css %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         body {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            background: linear-gradient(135deg, #0f4f4a, #0d9488, #14b8a6);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
         .login-card {
             max-width: 420px;
             width: 100%;
-            box-shadow: 0 4px 20px rgba(0,0,0,.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,.18);
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
         }
+        .login-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #0f4f4a, #0d9488);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .login-icon i {
+            font-size: 1.8rem;
+            color: #fff;
+        }
+        .btn-teal {
+            background: linear-gradient(135deg, #0f4f4a, #0d9488);
+            color: #fff;
+            border: none;
+        }
+        .btn-teal:hover {
+            background: linear-gradient(135deg, #115e59, #14b8a6);
+            color: #fff;
+        }
+        .form-control:focus {
+            border-color: #0d9488;
+            box-shadow: 0 0 0 0.2rem rgba(13,148,136,.25);
+        }
+        a { color: #0d9488; }
+        a:hover { color: #115e59; }
     </style>
 </head>
 <body>
     <div class="card login-card">
         <div class="card-body p-5">
             <div class="text-center mb-4">
-                <h3>&#9764; Clínica Salud Total</h3>
+                <div class="login-icon">
+                    <i class="bi bi-hospital"></i>
+                </div>
+                <h3 class="fw-bold">Clinica Salud Total</h3>
                 <p class="text-muted">Ingresa a tu cuenta</p>
             </div>
 
             {% if messages %}
             {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="border-radius: 10px; border: none;">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
@@ -41,29 +75,35 @@
             {% endif %}
 
             {% if form.errors %}
-            <div class="alert alert-danger">
-                Usuario o contraseña incorrectos. Intenta de nuevo.
+            <div class="alert alert-danger" style="border-radius: 10px; border: none;">
+                <i class="bi bi-exclamation-circle me-2"></i>Usuario o contrasena incorrectos. Intenta de nuevo.
             </div>
             {% endif %}
 
             <form method="post">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="id_username" class="form-label">Usuario</label>
-                    <input type="text" name="username" id="id_username" class="form-control" required autofocus>
+                    <label for="id_username" class="form-label fw-semibold">
+                        <i class="bi bi-person me-1"></i>Usuario
+                    </label>
+                    <input type="text" name="username" id="id_username" class="form-control form-control-lg" required autofocus placeholder="Tu nombre de usuario">
                 </div>
-                <div class="mb-3">
-                    <label for="id_password" class="form-label">Contraseña</label>
-                    <input type="password" name="password" id="id_password" class="form-control" required>
+                <div class="mb-4">
+                    <label for="id_password" class="form-label fw-semibold">
+                        <i class="bi bi-lock me-1"></i>Contrasena
+                    </label>
+                    <input type="password" name="password" id="id_password" class="form-control form-control-lg" required placeholder="Tu contrasena">
                 </div>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary btn-lg">Iniciar Sesión</button>
+                    <button type="submit" class="btn btn-teal btn-lg">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesion
+                    </button>
                 </div>
             </form>
 
             <hr>
             <div class="text-center">
-                <p class="mb-0">¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
+                <p class="mb-0 text-muted">No tienes cuenta? <a href="{% url 'registro' %}" class="fw-semibold">Registrate aqui</a></p>
             </div>
         </div>
     </div>

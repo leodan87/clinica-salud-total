@@ -1,63 +1,117 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Inicio - Clínica Salud Total{% endblock %}
+{% block titulo %}Panel de Control - Clinica Salud Total{% endblock %}
 
 {% block contenido %}
-<div class="row mb-4">
-    <div class="col">
-        <h2>Panel de Control</h2>
-        <p class="text-muted">Bienvenido al Sistema de Gestión de la Clínica Salud Total</p>
-    </div>
+<div class="page-header">
+    <h2><i class="bi bi-grid-1x2 me-2"></i>Panel de Control</h2>
+    <p>Bienvenido al Sistema de Gestion de la Clinica Salud Total</p>
 </div>
 
-<div class="row mb-4">
-    <div class="col-md-3">
+<!-- Stat Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-lg-3">
         <div class="card stat-card pacientes">
             <div class="card-body">
-                <h5 class="card-title text-muted">Pacientes</h5>
-                <h2>{{ total_pacientes }}</h2>
-                <a href="{% url 'paciente_lista' %}" class="text-decoration-none">Ver todos &rarr;</a>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small fw-semibold">Pacientes</p>
+                        <h2 class="mb-0 fw-bold">{{ total_pacientes }}</h2>
+                    </div>
+                    <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+                </div>
+                <a href="{% url 'paciente_lista' %}" class="text-decoration-none small d-block mt-3" style="color: var(--pacientes);">
+                    Ver todos <i class="bi bi-arrow-right"></i>
+                </a>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6 col-lg-3">
         <div class="card stat-card doctores">
             <div class="card-body">
-                <h5 class="card-title text-muted">Doctores</h5>
-                <h2>{{ total_doctores }}</h2>
-                <a href="{% url 'doctor_lista' %}" class="text-decoration-none">Ver todos &rarr;</a>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small fw-semibold">Doctores</p>
+                        <h2 class="mb-0 fw-bold">{{ total_doctores }}</h2>
+                    </div>
+                    <div class="stat-icon"><i class="bi bi-person-badge-fill"></i></div>
+                </div>
+                <a href="{% url 'doctor_lista' %}" class="text-decoration-none small d-block mt-3" style="color: var(--doctores);">
+                    Ver todos <i class="bi bi-arrow-right"></i>
+                </a>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6 col-lg-3">
         <div class="card stat-card citas">
             <div class="card-body">
-                <h5 class="card-title text-muted">Citas Pendientes</h5>
-                <h2>{{ citas_pendientes }}</h2>
-                <a href="{% url 'cita_lista' %}" class="text-decoration-none">Ver todas &rarr;</a>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small fw-semibold">Citas Pendientes</p>
+                        <h2 class="mb-0 fw-bold">{{ citas_pendientes }}</h2>
+                    </div>
+                    <div class="stat-icon"><i class="bi bi-calendar2-check-fill"></i></div>
+                </div>
+                <a href="{% url 'cita_lista' %}" class="text-decoration-none small d-block mt-3" style="color: var(--citas);">
+                    Ver todas <i class="bi bi-arrow-right"></i>
+                </a>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6 col-lg-3">
         <div class="card stat-card especialidades">
             <div class="card-body">
-                <h5 class="card-title text-muted">Especialidades</h5>
-                <h2>{{ total_especialidades }}</h2>
-                <a href="{% url 'especialidad_lista' %}" class="text-decoration-none">Ver todas &rarr;</a>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small fw-semibold">Especialidades</p>
+                        <h2 class="mb-0 fw-bold">{{ total_especialidades }}</h2>
+                    </div>
+                    <div class="stat-icon"><i class="bi bi-list-stars"></i></div>
+                </div>
+                <a href="{% url 'especialidad_lista' %}" class="text-decoration-none small d-block mt-3" style="color: var(--especialidades);">
+                    Ver todas <i class="bi bi-arrow-right"></i>
+                </a>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
+<!-- Quick Actions + Info -->
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
             <div class="card-body">
-                <h5 class="card-title">Acciones Rápidas</h5>
+                <h5 class="fw-bold mb-3"><i class="bi bi-lightning-charge me-2" style="color: var(--teal-primary);"></i>Acciones Rapidas</h5>
                 <div class="d-grid gap-2">
-                    <a href="{% url 'paciente_crear' %}" class="btn btn-outline-primary">+ Nuevo Paciente</a>
-                    <a href="{% url 'cita_crear' %}" class="btn btn-outline-danger">+ Nueva Cita Médica</a>
-                    <a href="{% url 'doctor_crear' %}" class="btn btn-outline-success">+ Nuevo Doctor</a>
+                    <a href="{% url 'paciente_crear' %}" class="btn btn-outline-primary"><i class="bi bi-person-plus me-2"></i>Nuevo Paciente</a>
+                    <a href="{% url 'doctor_crear' %}" class="btn btn-outline-success"><i class="bi bi-person-plus-fill me-2"></i>Nuevo Doctor</a>
+                    <a href="{% url 'cita_crear' %}" class="btn btn-outline-danger"><i class="bi bi-calendar-plus me-2"></i>Nueva Cita Medica</a>
+                    <a href="{% url 'especialidad_crear' %}" class="btn btn-outline-warning"><i class="bi bi-plus-circle me-2"></i>Nueva Especialidad</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3"><i class="bi bi-bar-chart me-2" style="color: var(--teal-primary);"></i>Resumen General</h5>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span class="text-muted"><i class="bi bi-people me-2"></i>Total de pacientes</span>
+                        <span class="badge rounded-pill" style="background: var(--pacientes);">{{ total_pacientes }}</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span class="text-muted"><i class="bi bi-person-badge me-2"></i>Total de doctores</span>
+                        <span class="badge rounded-pill" style="background: var(--doctores);">{{ total_doctores }}</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span class="text-muted"><i class="bi bi-calendar2-check me-2"></i>Total de citas</span>
+                        <span class="badge rounded-pill" style="background: var(--citas);">{{ total_citas }}</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+                        <span class="text-muted"><i class="bi bi-list-stars me-2"></i>Especialidades activas</span>
+                        <span class="badge rounded-pill" style="background: var(--especialidades); color: #000;">{{ total_especialidades }}</span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,55 +4,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Clínica Salud Total</title>
+    <title>Registro - Clinica Salud Total</title>
     {% bootstrap_css %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         body {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            background: linear-gradient(135deg, #0f4f4a, #0d9488, #14b8a6);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 20px 0;
         }
         .register-card {
             max-width: 480px;
             width: 100%;
-            box-shadow: 0 4px 20px rgba(0,0,0,.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,.18);
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
         }
+        .login-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #0f4f4a, #0d9488);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .login-icon i {
+            font-size: 1.8rem;
+            color: #fff;
+        }
+        .btn-teal {
+            background: linear-gradient(135deg, #0f4f4a, #0d9488);
+            color: #fff;
+            border: none;
+        }
+        .btn-teal:hover {
+            background: linear-gradient(135deg, #115e59, #14b8a6);
+            color: #fff;
+        }
+        .form-control:focus {
+            border-color: #0d9488;
+            box-shadow: 0 0 0 0.2rem rgba(13,148,136,.25);
+        }
+        a { color: #0d9488; }
+        a:hover { color: #115e59; }
     </style>
 </head>
 <body>
     <div class="card register-card">
         <div class="card-body p-5">
             <div class="text-center mb-4">
-                <h3>&#9764; Clínica Salud Total</h3>
-                <p class="text-muted">Crea tu cuenta</p>
+                <div class="login-icon">
+                    <i class="bi bi-person-plus"></i>
+                </div>
+                <h3 class="fw-bold">Crear Cuenta</h3>
+                <p class="text-muted">Registrate en Clinica Salud Total</p>
             </div>
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="border-radius: 10px; border: none;">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
 
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
                 <div class="mb-3">
-                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}</label>
                     {{ field }}
                     {% if field.help_text %}
                     <small class="form-text text-muted">{{ field.help_text }}</small>
                     {% endif %}
                     {% for error in field.errors %}
-                    <div class="text-danger small">{{ error }}</div>
+                    <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
                     {% endfor %}
                 </div>
                 {% endfor %}
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary btn-lg">Registrarse</button>
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-teal btn-lg">
+                        <i class="bi bi-person-check me-2"></i>Registrarse
+                    </button>
                 </div>
             </form>
 
             <hr>
             <div class="text-center">
-                <p class="mb-0">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
+                <p class="mb-0 text-muted">Ya tienes cuenta? <a href="{% url 'login' %}" class="fw-semibold">Inicia sesion</a></p>
             </div>
         </div>
     </div>

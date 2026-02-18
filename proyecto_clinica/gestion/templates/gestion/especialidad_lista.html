@@ -1,42 +1,54 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Especialidades - Clínica{% endblock %}
+{% block titulo %}Especialidades - Clinica Salud Total{% endblock %}
 
 {% block contenido %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Especialidades</h2>
-    <a href="{% url 'especialidad_crear' %}" class="btn btn-warning">+ Nueva Especialidad</a>
+<div class="d-flex justify-content-between align-items-center page-header">
+    <h2><i class="bi bi-list-stars me-2"></i>Especialidades</h2>
+    <a href="{% url 'especialidad_crear' %}" class="btn btn-warning">
+        <i class="bi bi-plus-circle me-1"></i> Nueva Especialidad
+    </a>
 </div>
 
-<div class="card">
-    <div class="card-body">
-        {% if especialidades %}
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for esp in especialidades %}
-                    <tr>
-                        <td>{{ esp.nombre }}</td>
-                        <td>{{ esp.descripcion }}</td>
-                        <td>
-                            <a href="{% url 'especialidad_editar' esp.pk %}" class="btn btn-sm btn-warning">Editar</a>
-                            <a href="{% url 'especialidad_eliminar' esp.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <p class="text-muted text-center py-4">No hay especialidades registradas.</p>
-        {% endif %}
+{% if especialidades %}
+<div class="table-container">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for esp in especialidades %}
+                <tr>
+                    <td><span class="fw-semibold">{{ esp.nombre }}</span></td>
+                    <td class="text-muted">{{ esp.descripcion|truncatewords:20 }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'especialidad_editar' esp.pk %}" class="btn btn-sm btn-outline-warning" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'especialidad_eliminar' esp.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
+{% else %}
+<div class="card">
+    <div class="empty-state">
+        <i class="bi bi-list-stars d-block"></i>
+        <p>No hay especialidades registradas.</p>
+        <a href="{% url 'especialidad_crear' %}" class="btn btn-warning btn-sm">
+            <i class="bi bi-plus-circle me-1"></i> Crear primera especialidad
+        </a>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

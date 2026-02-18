@@ -1,54 +1,62 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Pacientes - Clínica{% endblock %}
+{% block titulo %}Pacientes - Clinica Salud Total{% endblock %}
 
 {% block contenido %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Pacientes</h2>
-    <a href="{% url 'paciente_crear' %}" class="btn btn-primary">+ Nuevo Paciente</a>
+<div class="d-flex justify-content-between align-items-center page-header">
+    <h2><i class="bi bi-people me-2"></i>Pacientes</h2>
+    <a href="{% url 'paciente_crear' %}" class="btn btn-primary">
+        <i class="bi bi-person-plus me-1"></i> Nuevo Paciente
+    </a>
 </div>
 
-<div class="card">
-    <div class="card-body">
-        {% if pacientes %}
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Cédula</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Teléfono</th>
-                        <th>Email</th>
-                        <th>Fecha Nacimiento</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for paciente in pacientes %}
-                    <tr>
-                        <td>{{ paciente.cedula }}</td>
-                        <td>{{ paciente.nombre }}</td>
-                        <td>{{ paciente.apellido }}</td>
-                        <td>{{ paciente.telefono }}</td>
-                        <td>{{ paciente.email }}</td>
-                        <td>{{ paciente.fecha_nacimiento }}</td>
-                        <td>
-                            <a href="{% url 'paciente_editar' paciente.pk %}" class="btn btn-sm btn-warning" title="Editar">
-                                Editar
-                            </a>
-                            <a href="{% url 'paciente_eliminar' paciente.pk %}" class="btn btn-sm btn-danger" title="Eliminar">
-                                Eliminar
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <p class="text-muted text-center py-4">No hay pacientes registrados.</p>
-        {% endif %}
+{% if pacientes %}
+<div class="table-container">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Cedula</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Telefono</th>
+                    <th>Email</th>
+                    <th>Fecha Nacimiento</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for paciente in pacientes %}
+                <tr>
+                    <td><span class="fw-semibold">{{ paciente.cedula }}</span></td>
+                    <td>{{ paciente.nombre }}</td>
+                    <td>{{ paciente.apellido }}</td>
+                    <td><i class="bi bi-telephone me-1 text-muted"></i>{{ paciente.telefono }}</td>
+                    <td><i class="bi bi-envelope me-1 text-muted"></i>{{ paciente.email }}</td>
+                    <td><i class="bi bi-calendar me-1 text-muted"></i>{{ paciente.fecha_nacimiento }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'paciente_editar' paciente.pk %}" class="btn btn-sm btn-outline-warning" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'paciente_eliminar' paciente.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
+{% else %}
+<div class="card">
+    <div class="empty-state">
+        <i class="bi bi-people d-block"></i>
+        <p>No hay pacientes registrados.</p>
+        <a href="{% url 'paciente_crear' %}" class="btn btn-primary btn-sm">
+            <i class="bi bi-person-plus me-1"></i> Registrar primer paciente
+        </a>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
