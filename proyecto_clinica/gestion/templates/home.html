@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Inicio - Clínica Salud Total{% endblock %}
+
+{% block contenido %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Panel de Control</h2>
+        <p class="text-muted">Bienvenido al Sistema de Gestión de la Clínica Salud Total</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card pacientes">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Pacientes</h5>
+                <h2>{{ total_pacientes }}</h2>
+                <a href="{% url 'paciente_lista' %}" class="text-decoration-none">Ver todos &rarr;</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card doctores">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Doctores</h5>
+                <h2>{{ total_doctores }}</h2>
+                <a href="{% url 'doctor_lista' %}" class="text-decoration-none">Ver todos &rarr;</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card citas">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Citas Pendientes</h5>
+                <h2>{{ citas_pendientes }}</h2>
+                <a href="{% url 'cita_lista' %}" class="text-decoration-none">Ver todas &rarr;</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card especialidades">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Especialidades</h5>
+                <h2>{{ total_especialidades }}</h2>
+                <a href="{% url 'especialidad_lista' %}" class="text-decoration-none">Ver todas &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Acciones Rápidas</h5>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'paciente_crear' %}" class="btn btn-outline-primary">+ Nuevo Paciente</a>
+                    <a href="{% url 'cita_crear' %}" class="btn btn-outline-danger">+ Nueva Cita Médica</a>
+                    <a href="{% url 'doctor_crear' %}" class="btn btn-outline-success">+ Nuevo Doctor</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

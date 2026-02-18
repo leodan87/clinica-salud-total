@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Confirmar Eliminación - Clínica{% endblock %}
+
+{% block contenido %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Confirmar Eliminación</h4>
+            </div>
+            <div class="card-body text-center">
+                <p class="fs-5">¿Estás seguro de que deseas eliminar {{ tipo }}:</p>
+                <p class="fs-4 fw-bold">{{ objeto }}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="submit" class="btn btn-danger btn-lg">Sí, Eliminar</button>
+                        <a href="{% url lista_url %}" class="btn btn-secondary btn-lg">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
