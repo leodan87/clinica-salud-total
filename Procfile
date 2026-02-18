@@ -1,1 +1,1 @@
-web: cd proyecto_clinica && gunicorn clinica.wsgi --bind 0.0.0.0:$PORT
+web: cd proyecto_clinica && python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn clinica.wsgi --bind 0.0.0.0:$PORT
