@@ -112,7 +112,31 @@ clinica-django/
 
 8. Abrir en el navegador: `http://127.0.0.1:8000/`
 
-## Variables de entorno (produccion)
+## Despliegue en Railway
+
+La aplicacion esta desplegada en **Railway**, una plataforma en la nube que hospeda tanto el proyecto Django como la base de datos PostgreSQL.
+
+### Como funciona
+
+- Railway ejecuta el proyecto usando **Gunicorn** como servidor, configurado en el archivo `Procfile`:
+  ```
+  web: cd proyecto_clinica && gunicorn clinica.wsgi --bind 0.0.0.0:$PORT
+  ```
+- Railway provee una base de datos **PostgreSQL** en la nube y genera automaticamente la variable de entorno `DATABASE_URL` para que Django se conecte a ella.
+- Los archivos estaticos (CSS, JS, imagenes) se sirven con **WhiteNoise** sin necesidad de un servidor adicional.
+- Las migraciones se ejecutan automaticamente en cada despliegue.
+
+### Archivos de configuracion para Railway
+
+| Archivo | Funcion |
+|---|---|
+| `Procfile` | Define el comando para iniciar el servidor con Gunicorn |
+| `runtime.txt` | Especifica la version de Python (3.13.2) |
+| `requirements.txt` | Lista las dependencias que Railway instala automaticamente |
+
+### Variables de entorno en Railway
+
+Estas variables se configuran en el panel de Railway:
 
 | Variable | Descripcion |
 |---|---|
@@ -120,4 +144,4 @@ clinica-django/
 | `DEBUG` | `False` en produccion |
 | `ALLOWED_HOSTS` | Dominios permitidos |
 | `CSRF_TRUSTED_ORIGINS` | Origenes HTTPS de confianza |
-| `DATABASE_URL` | URL de conexion a PostgreSQL |
+| `DATABASE_URL` | URL de conexion a PostgreSQL (generada automaticamente por Railway) |
