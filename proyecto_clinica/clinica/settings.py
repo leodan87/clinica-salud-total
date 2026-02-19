@@ -1,5 +1,5 @@
 """
-settings.py - Configuracion principal del proyecto Django.
+settings.py - Configuracion principal del proyecto Django (Clinica Salud Total).
 
 Este archivo controla todo el comportamiento de Django:
 - Conexion a la base de datos (PostgreSQL)
