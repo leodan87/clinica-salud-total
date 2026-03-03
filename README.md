@@ -40,20 +40,19 @@ Clinica Salud Total es una aplicacion web que facilita la gestion diaria de una 
 ## Estructura del proyecto
 
 ```
-clinica-django/
-├── proyecto_clinica/
-│   ├── clinica/           # Configuracion del proyecto Django
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   └── wsgi.py
-│   ├── gestion/           # Aplicacion principal
-│   │   ├── models.py      # Modelos de datos
-│   │   ├── views.py       # Vistas (controladores)
-│   │   ├── forms.py       # Formularios
-│   │   ├── admin.py       # Configuracion del admin
-│   │   ├── urls.py        # Rutas de la aplicacion
-│   │   └── templates/     # Plantillas HTML
-│   └── manage.py
+clinica-salud-total/
+├── clinica/               # Configuracion del proyecto Django
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── gestion/               # Aplicacion principal
+│   ├── models.py          # Modelos de datos
+│   ├── views.py           # Vistas (controladores)
+│   ├── forms.py           # Formularios
+│   ├── admin.py           # Configuracion del admin
+│   ├── urls.py            # Rutas de la aplicacion
+│   └── templates/         # Plantillas HTML
+├── manage.py
 ├── requirements.txt
 ├── Procfile
 └── runtime.txt
@@ -76,15 +75,15 @@ clinica-django/
 
 1. Clonar el repositorio:
    ```bash
-   git clone <url-del-repositorio>
-   cd clinica-django
+   git clone https://github.com/leodan87/clinica-salud-total.git
+   cd clinica-salud-total
    ```
 
 2. Crear y activar un entorno virtual:
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   venv\Scripts\activate     # Windows
+   python -m venv .venv
+   source .venv/bin/activate  # Linux/Mac
+   .venv\Scripts\activate     # Windows
    ```
 
 3. Instalar dependencias:
@@ -96,7 +95,6 @@ clinica-django/
 
 5. Ejecutar migraciones:
    ```bash
-   cd proyecto_clinica
    python manage.py migrate
    ```
 
@@ -120,7 +118,7 @@ La aplicacion esta desplegada en **Railway**, una plataforma en la nube que hosp
 
 - Railway ejecuta el proyecto usando **Gunicorn** como servidor, configurado en el archivo `Procfile`:
   ```
-  web: cd proyecto_clinica && gunicorn clinica.wsgi --bind 0.0.0.0:$PORT
+  web: gunicorn clinica.wsgi --bind 0.0.0.0:$PORT
   ```
 - Railway provee una base de datos **PostgreSQL** en la nube y genera automaticamente la variable de entorno `DATABASE_URL` para que Django se conecte a ella.
 - Los archivos estaticos (CSS, JS, imagenes) se sirven con **WhiteNoise** sin necesidad de un servidor adicional.
