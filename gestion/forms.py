@@ -27,9 +27,12 @@ class DoctorForm(forms.ModelForm):
             'especialidad': forms.Select(attrs={'class': 'form-select'}),
         }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['especialidad'].queryset = Especialidad.objects.filter(activo=True)
+        if user:
+            self.fields['especialidad'].queryset = Especialidad.objects.filter(activo=True, usuario=user)
+        else:
+            self.fields['especialidad'].queryset = Especialidad.objects.filter(activo=True)
 
 
 class PacienteForm(forms.ModelForm):
@@ -61,10 +64,14 @@ class CitaMedicaForm(forms.ModelForm):
             'estado': forms.Select(attrs={'class': 'form-select'}),
         }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['paciente'].queryset = Paciente.objects.filter(activo=True)
-        self.fields['doctor'].queryset = Doctor.objects.filter(activo=True)
+        if user:
+            self.fields['paciente'].queryset = Paciente.objects.filter(activo=True, usuario=user)
+            self.fields['doctor'].queryset = Doctor.objects.filter(activo=True, usuario=user)
+        else:
+            self.fields['paciente'].queryset = Paciente.objects.filter(activo=True)
+            self.fields['doctor'].queryset = Doctor.objects.filter(activo=True)
 
 
 class RegistroUsuarioForm(UserCreationForm):

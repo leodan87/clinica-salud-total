@@ -1,10 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Especialidad(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True)
     activo = models.BooleanField(default=True)
+    usuario = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='especialidades',
+        null=True, blank=True
+    )
 
     class Meta:
         verbose_name_plural = 'Especialidades'
@@ -17,13 +22,17 @@ class Especialidad(models.Model):
 class Doctor(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
-    cedula = models.CharField(max_length=20, unique=True)
+    cedula = models.CharField(max_length=20)
     telefono = models.CharField(max_length=20)
     email = models.EmailField(blank=True)
     especialidad = models.ForeignKey(
         Especialidad, on_delete=models.PROTECT, related_name='doctores'
     )
     activo = models.BooleanField(default=True)
+    usuario = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='doctores',
+        null=True, blank=True
+    )
 
     class Meta:
         verbose_name_plural = 'Doctores'
@@ -36,12 +45,16 @@ class Doctor(models.Model):
 class Paciente(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
-    cedula = models.CharField(max_length=20, unique=True)
+    cedula = models.CharField(max_length=20)
     fecha_nacimiento = models.DateField()
     telefono = models.CharField(max_length=20)
     email = models.EmailField(blank=True)
     direccion = models.TextField(blank=True)
     activo = models.BooleanField(default=True)
+    usuario = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='pacientes',
+        null=True, blank=True
+    )
 
     class Meta:
         ordering = ['apellido', 'nombre']
@@ -71,6 +84,10 @@ class CitaMedica(models.Model):
         max_length=20, choices=ESTADO_CHOICES, default='Pendiente'
     )
     activo = models.BooleanField(default=True)
+    usuario = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='citas_medicas',
+        null=True, blank=True
+    )
 
     class Meta:
         verbose_name = 'Cita Médica'

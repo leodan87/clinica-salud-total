@@ -11,11 +11,11 @@ from .forms import (
 @login_required
 def home(request):
     contexto = {
-        'total_pacientes': Paciente.objects.filter(activo=True).count(),
-        'total_doctores': Doctor.objects.filter(activo=True).count(),
-        'total_citas': CitaMedica.objects.filter(activo=True).count(),
-        'citas_pendientes': CitaMedica.objects.filter(activo=True, estado='Pendiente').count(),
-        'total_especialidades': Especialidad.objects.filter(activo=True).count(),
+        'total_pacientes': Paciente.objects.filter(activo=True, usuario=request.user).count(),
+        'total_doctores': Doctor.objects.filter(activo=True, usuario=request.user).count(),
+        'total_citas': CitaMedica.objects.filter(activo=True, usuario=request.user).count(),
+        'citas_pendientes': CitaMedica.objects.filter(activo=True, estado='Pendiente', usuario=request.user).count(),
+        'total_especialidades': Especialidad.objects.filter(activo=True, usuario=request.user).count(),
     }
     return render(request, 'home.html', contexto)
 
@@ -34,7 +34,7 @@ def registro_usuario(request):
 
 @login_required
 def especialidad_lista(request):
-    especialidades = Especialidad.objects.filter(activo=True)
+    especialidades = Especialidad.objects.filter(activo=True, usuario=request.user)
     return render(request, 'gestion/especialidad_lista.html', {'especialidades': especialidades})
 
 
@@ -43,7 +43,9 @@ def especialidad_crear(request):
     if request.method == 'POST':
         form = EspecialidadForm(request.POST)
         if form.is_valid():
-            form.save()
+            especialidad = form.save(commit=False)
+            especialidad.usuario = request.user
+            especialidad.save()
             messages.success(request, 'Especialidad creada exitosamente.')
             return redirect('especialidad_lista')
     else:
@@ -55,7 +57,7 @@ def especialidad_crear(request):
 
 @login_required
 def especialidad_editar(request, pk):
-    especialidad = get_object_or_404(Especialidad, pk=pk, activo=True)
+    especialidad = get_object_or_404(Especialidad, pk=pk, activo=True, usuario=request.user)
     if request.method == 'POST':
         form = EspecialidadForm(request.POST, instance=especialidad)
         if form.is_valid():
@@ -71,7 +73,7 @@ def especialidad_editar(request, pk):
 
 @login_required
 def especialidad_eliminar(request, pk):
-    especialidad = get_object_or_404(Especialidad, pk=pk, activo=True)
+    especialidad = get_object_or_404(Especialidad, pk=pk, activo=True, usuario=request.user)
     if request.method == 'POST':
         especialidad.activo = False
         especialidad.save()
@@ -84,20 +86,22 @@ def especialidad_eliminar(request, pk):
 
 @login_required
 def doctor_lista(request):
-    doctores = Doctor.objects.filter(activo=True).select_related('especialidad')
+    doctores = Doctor.objects.filter(activo=True, usuario=request.user).select_related('especialidad')
     return render(request, 'gestion/doctor_lista.html', {'doctores': doctores})
 
 
 @login_required
 def doctor_crear(request):
     if request.method == 'POST':
-        form = DoctorForm(request.POST)
+        form = DoctorForm(request.POST, user=request.user)
         if form.is_valid():
-            form.save()
+            doctor = form.save(commit=False)
+            doctor.usuario = request.user
+            doctor.save()
             messages.success(request, 'Doctor registrado exitosamente.')
             return redirect('doctor_lista')
     else:
-        form = DoctorForm()
+        form = DoctorForm(user=request.user)
     return render(request, 'gestion/doctor_formulario.html', {
         'form': form, 'titulo': 'Nuevo Doctor'
     })
@@ -105,15 +109,15 @@ def doctor_crear(request):
 
 @login_required
 def doctor_editar(request, pk):
-    doctor = get_object_or_404(Doctor, pk=pk, activo=True)
+    doctor = get_object_or_404(Doctor, pk=pk, activo=True, usuario=request.user)
     if request.method == 'POST':
-        form = DoctorForm(request.POST, instance=doctor)
+        form = DoctorForm(request.POST, instance=doctor, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Doctor actualizado exitosamente.')
             return redirect('doctor_lista')
     else:
-        form = DoctorForm(instance=doctor)
+        form = DoctorForm(instance=doctor, user=request.user)
     return render(request, 'gestion/doctor_formulario.html', {
         'form': form, 'titulo': 'Editar Doctor'
     })
@@ -121,7 +125,7 @@ def doctor_editar(request, pk):
 
 @login_required
 def doctor_eliminar(request, pk):
-    doctor = get_object_or_404(Doctor, pk=pk, activo=True)
+    doctor = get_object_or_404(Doctor, pk=pk, activo=True, usuario=request.user)
     if request.method == 'POST':
         doctor.activo = False
         doctor.save()
@@ -134,7 +138,7 @@ def doctor_eliminar(request, pk):
 
 @login_required
 def paciente_lista(request):
-    pacientes = Paciente.objects.filter(activo=True)
+    pacientes = Paciente.objects.filter(activo=True, usuario=request.user)
     return render(request, 'gestion/paciente_lista.html', {'pacientes': pacientes})
 
 
@@ -143,7 +147,9 @@ def paciente_crear(request):
     if request.method == 'POST':
         form = PacienteForm(request.POST)
         if form.is_valid():
-            form.save()
+            paciente = form.save(commit=False)
+            paciente.usuario = request.user
+            paciente.save()
             messages.success(request, 'Paciente registrado exitosamente.')
             return redirect('paciente_lista')
     else:
@@ -155,7 +161,7 @@ def paciente_crear(request):
 
 @login_required
 def paciente_editar(request, pk):
-    paciente = get_object_or_404(Paciente, pk=pk, activo=True)
+    paciente = get_object_or_404(Paciente, pk=pk, activo=True, usuario=request.user)
     if request.method == 'POST':
         form = PacienteForm(request.POST, instance=paciente)
         if form.is_valid():
@@ -171,7 +177,7 @@ def paciente_editar(request, pk):
 
 @login_required
 def paciente_eliminar(request, pk):
-    paciente = get_object_or_404(Paciente, pk=pk, activo=True)
+    paciente = get_object_or_404(Paciente, pk=pk, activo=True, usuario=request.user)
     if request.method == 'POST':
         paciente.activo = False
         paciente.save()
@@ -184,20 +190,22 @@ def paciente_eliminar(request, pk):
 
 @login_required
 def cita_lista(request):
-    citas = CitaMedica.objects.filter(activo=True).select_related('paciente', 'doctor')
+    citas = CitaMedica.objects.filter(activo=True, usuario=request.user).select_related('paciente', 'doctor')
     return render(request, 'gestion/cita_lista.html', {'citas': citas})
 
 
 @login_required
 def cita_crear(request):
     if request.method == 'POST':
-        form = CitaMedicaForm(request.POST)
+        form = CitaMedicaForm(request.POST, user=request.user)
         if form.is_valid():
-            form.save()
+            cita = form.save(commit=False)
+            cita.usuario = request.user
+            cita.save()
             messages.success(request, 'Cita médica creada exitosamente.')
             return redirect('cita_lista')
     else:
-        form = CitaMedicaForm()
+        form = CitaMedicaForm(user=request.user)
     return render(request, 'gestion/cita_formulario.html', {
         'form': form, 'titulo': 'Nueva Cita Médica'
     })
@@ -205,15 +213,15 @@ def cita_crear(request):
 
 @login_required
 def cita_editar(request, pk):
-    cita = get_object_or_404(CitaMedica, pk=pk, activo=True)
+    cita = get_object_or_404(CitaMedica, pk=pk, activo=True, usuario=request.user)
     if request.method == 'POST':
-        form = CitaMedicaForm(request.POST, instance=cita)
+        form = CitaMedicaForm(request.POST, instance=cita, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Cita médica actualizada exitosamente.')
             return redirect('cita_lista')
     else:
-        form = CitaMedicaForm(instance=cita)
+        form = CitaMedicaForm(instance=cita, user=request.user)
     return render(request, 'gestion/cita_formulario.html', {
         'form': form, 'titulo': 'Editar Cita Médica'
     })
@@ -221,7 +229,7 @@ def cita_editar(request, pk):
 
 @login_required
 def cita_eliminar(request, pk):
-    cita = get_object_or_404(CitaMedica, pk=pk, activo=True)
+    cita = get_object_or_404(CitaMedica, pk=pk, activo=True, usuario=request.user)
     if request.method == 'POST':
         cita.activo = False
         cita.save()
